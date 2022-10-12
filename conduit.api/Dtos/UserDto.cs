@@ -1,9 +1,6 @@
 ﻿namespace conduit.api.Dtos;
 
-public class UserDto
+public class UserDto : GeneralUserDto
 {
-    public string Username { get; set; } = "";
-
-
     public IEnumerable<string> ArticlesUrls { get; set; } = Enumerable.Empty<string>();
 }

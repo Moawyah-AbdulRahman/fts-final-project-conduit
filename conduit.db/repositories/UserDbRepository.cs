@@ -12,6 +12,22 @@ public class UserDbRepository : IUserRepository
         this.dbContext = dbContext;
     }
 
+    public bool ContainsUsername(string username)
+    {
+        return dbContext.Users.Any(u => u.Username == username);
+    }
+
+    public void CreateUser(User user)
+    {
+        dbContext.Users.Add(user);
+        dbContext.SaveChanges();
+    }
+
+    public User? GetUser(long id)
+    {
+        return dbContext.Users.FirstOrDefault(u => u.Id == id);
+    }
+
     public IEnumerable<User> ReadUsersWithArticles(int page, int size)
     {
         return dbContext.Users
@@ -26,5 +42,11 @@ public class UserDbRepository : IUserRepository
         return dbContext.Users
             .Include(u => u.PostedArticles)
             .FirstOrDefault(u => u.Id == id);
+    }
+
+    public void UpdateUser(User user)
+    {
+        dbContext.Users.Update(user);
+        dbContext.SaveChanges();
     }
 }
