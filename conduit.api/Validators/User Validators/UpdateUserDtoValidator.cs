@@ -2,8 +2,8 @@
 
 public class UpdateUserDtoValidator : ModificationUserDtoValidator
 {
-	public UpdateUserDtoValidator() : base()
-	{
+    public UpdateUserDtoValidator() : base()
+    {
 
-	}
+    }
 }

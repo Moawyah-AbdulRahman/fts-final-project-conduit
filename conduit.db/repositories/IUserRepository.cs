@@ -4,6 +4,7 @@ namespace conduit.db.repositories;
 
 public interface IUserRepository
 {
+    bool ContainsId(long userId);
     bool ContainsUsername(string username);
     void CreateUser(User user);
     User? GetUser(long id);

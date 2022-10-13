@@ -1,9 +1,9 @@
-﻿using conduit.api.Dtos;
+﻿using conduit.api.Dtos.User;
 using FluentValidation;
 
 namespace conduit.api.Validators;
 
-public class ModificationUserDtoValidator : AbstractValidator<ModificationUserDto>
+public abstract class ModificationUserDtoValidator : AbstractValidator<ModificationUserDto>
 {
     public ModificationUserDtoValidator()
     {

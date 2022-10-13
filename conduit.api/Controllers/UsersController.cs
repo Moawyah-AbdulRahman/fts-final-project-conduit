@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using conduit.api.Dtos;
+using conduit.api.Dtos.User;
 using conduit.db.models;
 using conduit.db.repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -37,7 +37,7 @@ public class UsersController : ControllerBase
     [HttpGet]
     public IActionResult GetMultipleUsers([FromQuery] int page = 1, [FromQuery] int size = 50)
     {
-        size = Math.Max(Math.Min(size, 50), 0);
+        size = Math.Max(Math.Min(size, 50), 1);
         page = Math.Max(1, page);
 
         var usersWithArticles = userRepository.ReadUsersWithArticles(page, size);
@@ -70,7 +70,7 @@ public class UsersController : ControllerBase
                 new
                 {
                     Error = "Resource not found.",
-                    SuggestedSolution = @"Use 'api\users' with post method to create a resource."
+                    SuggestedSolution = @"Use 'api/users' with post method to create a resource."
                 });
         }
 

@@ -12,6 +12,11 @@ public class UserDbRepository : IUserRepository
         this.dbContext = dbContext;
     }
 
+    public bool ContainsId(long id)
+    {
+        return dbContext.Users.Any(u => u.Id == id);
+    }
+
     public bool ContainsUsername(string username)
     {
         return dbContext.Users.Any(u => u.Username == username);

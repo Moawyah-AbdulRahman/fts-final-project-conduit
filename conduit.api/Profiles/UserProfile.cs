@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using conduit.api.Dtos;
+using conduit.api.Dtos.User;
 using conduit.db.models;
 
 namespace conduit.api.Profiles;

@@ -1,4 +1,4 @@
-﻿namespace conduit.api.Dtos;
+﻿namespace conduit.api.Dtos.User;
 
 public class UpdateUserDto : ModificationUserDto
 {
