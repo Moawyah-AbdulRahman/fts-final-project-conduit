@@ -5,9 +5,9 @@ namespace conduit.api.Validators.Article_Validators;
 
 public class UpdateArticleDtoValidator : GeneralArticleDtoValidator
 {
-	public UpdateArticleDtoValidator(IUserRepository userRepository) : base()
-	{
-		RuleFor(a => (a as UpdateArticleDto).CreatorId)
-			.Must(creatorId => userRepository.ContainsId(creatorId));
-	}
+    public UpdateArticleDtoValidator(IUserRepository userRepository) : base()
+    {
+        RuleFor(a => (a as UpdateArticleDto).CreatorId)
+            .Must(creatorId => userRepository.ContainsId(creatorId));
+    }
 }

@@ -1,8 +1,10 @@
 using conduit.api.Dtos.Article;
+using conduit.api.Dtos.Comment;
 using conduit.api.Dtos.User;
 using conduit.api.Filters;
 using conduit.api.Validators;
 using conduit.api.Validators.Article_Validators;
+using conduit.api.Validators.Comment_Validators;
 using conduit.db;
 using conduit.db.repositories;
 using FluentValidation;
@@ -30,6 +32,7 @@ builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
 builder.Services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateArticleDto>, CreateArticleDtoValidator>();
+builder.Services.AddScoped<IValidator<CreateCommentDto>, CreateCommentDtoValidator>();
 
 var app = builder.Build();
 

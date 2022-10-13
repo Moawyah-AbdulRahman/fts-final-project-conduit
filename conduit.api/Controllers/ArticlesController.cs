@@ -22,7 +22,7 @@ public class ArticlesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetArticle([FromRoute] long id)
+    public IActionResult GetSingleArticle([FromRoute] long id)
     {
         var article = articleRepository.ReadSingleArticleIncludeCommentsAndFavourates(id);
 
