@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using conduit.api.Dtos.Comment;
-using conduit.db.models;
+using conduit.domain.models;
 
 namespace conduit.api.Profiles;
 
-public class CommentProfile : Profile
+public class CommentDtoProfile : Profile
 {
-    public CommentProfile()
+    public CommentDtoProfile()
     {
         CreateMap<Comment, CommentDto>();
 

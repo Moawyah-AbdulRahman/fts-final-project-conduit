@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace conduit.db.configurations;
 
-internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<User>
+internal class UserEntityTypeConfiguration : IEntityTypeConfiguration<UserEntity>
 {
-    public void Configure(EntityTypeBuilder<User> builder)
+    public void Configure(EntityTypeBuilder<UserEntity> builder)
     {
         builder.HasKey(u => u.Id);
 

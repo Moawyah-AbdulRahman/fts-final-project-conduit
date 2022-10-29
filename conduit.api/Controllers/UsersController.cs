@@ -1,50 +1,35 @@
 ﻿using AutoMapper;
 using conduit.api.Dtos.User;
-using conduit.db.models;
-using conduit.db.repositories;
+using conduit.api.Filters;
+using conduit.domain.models;
+using conduit.domain.services.interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace conduit.api.Controllers;
-
+[ConduitExceptionFilter]
 [Route("api/users")]
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly IUserRepository userRepository;
+    private readonly IUserService service;
     private readonly IMapper mapper;
 
-    public UsersController(IUserRepository userRepository, IMapper mapper)
+    public UsersController(IUserService service, IMapper mapper)
     {
-        this.userRepository = userRepository;
+        this.service = service;
         this.mapper = mapper;
     }
 
     [HttpGet("{id}")]
     public IActionResult GetSingleUser([FromRoute] long id)
     {
-        var userWithArticles = userRepository.ReadUserWithPostedArticles(id);
-
-        if (userWithArticles is null)
-        {
-            return NotFound();
-        }
-
-        var userDto = mapper.Map<UserDto>(userWithArticles);
-
-        return Ok(userDto);
+        return Ok(mapper.Map<UserDto>(service.GetUser(id)));
     }
 
     [HttpGet]
     public IActionResult GetMultipleUsers([FromQuery] int page = 1, [FromQuery] int size = 50)
     {
-        size = Math.Max(Math.Min(size, 50), 1);
-        page = Math.Max(1, page);
-
-        var usersWithArticles = userRepository.ReadUsersWithArticles(page, size);
-
-        var userDtos = mapper.Map<IEnumerable<UserDto>>(usersWithArticles);
-
-        return Ok(userDtos);
+        return Ok(mapper.Map<IEnumerable<UserDto>>(service.GetUsers(page, size)));
     }
 
     [HttpPost]
@@ -52,7 +37,7 @@ public class UsersController : ControllerBase
     {
         var user = mapper.Map<User>(createUserDto);
 
-        userRepository.CreateUser(user);
+        service.CreateUser(user);
 
         return Created($"api/users/{user.Id}", null);
     }
@@ -61,34 +46,9 @@ public class UsersController : ControllerBase
     public IActionResult UpdateUser([FromRoute] long id, [FromBody] UpdateUserDto updateUserDto)
     {
         var user = mapper.Map<User>(updateUserDto);
-
-        var userInDb = userRepository.GetUser(id);
-
-        if (userInDb is null)
-        {
-            return NotFound(
-                new
-                {
-                    Error = "Resource not found.",
-                    SuggestedSolution = @"Use 'api/users' with post method to create a resource."
-                });
-        }
-
-        if (userInDb.Username != updateUserDto.Username)
-        {
-            if (userRepository.ContainsUsername(updateUserDto.Username))
-            {
-                return BadRequest(
-                    new
-                    {
-                        Error = "New username already in use.",
-                        SuggestedSolution = "Try other username."
-                    });
-            }
-        }
-
         user.Id = id;
-        userRepository.UpdateUser(user);
+
+        service.UpdateUser(user);
 
         return Ok($"api/users/{user.Id}");
     }

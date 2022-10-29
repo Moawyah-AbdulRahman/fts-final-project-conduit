@@ -7,18 +7,19 @@ using conduit.api.Validators.Article_Validators;
 using conduit.api.Validators.Comment_Validators;
 using conduit.db;
 using conduit.db.repositories;
+using conduit.domain.repositories;
+using conduit.infrastructure;
+using conduit.infrastructure.profiles;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //filters
-builder.Services.AddControllers(opt => opt.Filters.Add<ValidationFilter>());
+builder.Services.AddControllers(opt => opt.Filters.Add<ValidateRequestFilter>());
 
 //persistance related services
-builder.Services.AddScoped<ConduitDbContext>();
-builder.Services.AddScoped<IUserRepository, UserDbRepository>();
-builder.Services.AddScoped<IArticleRepository, ArticleDbRepository>();
+builder.Services.AddConduit();
 
 //mappers
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -29,10 +30,10 @@ builder.Services.AddSwaggerGen();
 
 //validation
 builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddScoped<IValidator<CreateUserDto>, CreateUserDtoValidator>();
-builder.Services.AddScoped<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
-builder.Services.AddScoped<IValidator<CreateArticleDto>, CreateArticleDtoValidator>();
-builder.Services.AddScoped<IValidator<CreateCommentDto>, CreateCommentDtoValidator>();
+builder.Services.AddSingleton<IValidator<CreateUserDto>, CreateUserDtoValidator>();
+builder.Services.AddSingleton<IValidator<UpdateUserDto>, UpdateUserDtoValidator>();
+builder.Services.AddSingleton<IValidator<CreateArticleDto>, CreateArticleDtoValidator>();
+builder.Services.AddSingleton<IValidator<CreateCommentDto>, CreateCommentDtoValidator>();
 
 var app = builder.Build();
 

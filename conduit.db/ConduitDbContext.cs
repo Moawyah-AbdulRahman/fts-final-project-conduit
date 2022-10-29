@@ -8,11 +8,11 @@ public class ConduitDbContext : DbContext
 {
 
 #nullable disable
-    internal DbSet<User> Users { get; set; }
+    internal DbSet<UserEntity> Users { get; set; }
 
-    internal DbSet<Article> Articles { get; set; }
+    internal DbSet<ArticleEntity> Articles { get; set; }
 
-    internal DbSet<Comment> Comments { get; set; }
+    internal DbSet<CommentEntity> Comments { get; set; }
 
 #nullable enable
 
@@ -35,11 +35,11 @@ public class ConduitDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<User>());
+        new UserEntityTypeConfiguration().Configure(modelBuilder.Entity<UserEntity>());
 
-        new ArticleEntityTypeConfiguration().Configure(modelBuilder.Entity<Article>());
+        new ArticleEntityTypeConfiguration().Configure(modelBuilder.Entity<ArticleEntity>());
 
-        new CommentEntityTypeConfiguration().Configure(modelBuilder.Entity<Comment>());
+        new CommentEntityTypeConfiguration().Configure(modelBuilder.Entity<CommentEntity>());
     }
 
 }

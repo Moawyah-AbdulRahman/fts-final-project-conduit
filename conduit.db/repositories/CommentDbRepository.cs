@@ -1,14 +1,22 @@
-﻿using conduit.db.models;
+﻿using AutoMapper;
+using conduit.db.models;
+using conduit.domain.models;
+using conduit.domain.repositories;
 
 namespace conduit.db.repositories;
 
 public class CommentDbRepository : ICommentRepository
 {
     private readonly ConduitDbContext dbContext;
+    private readonly IMapper mapper;
+    private readonly IArticleRepository articleRepository;
 
-    public CommentDbRepository(ConduitDbContext dbContext)
+    public CommentDbRepository(ConduitDbContext dbContext, IMapper mapper, 
+        IArticleRepository articleRepository)
     {
         this.dbContext = dbContext;
+        this.mapper = mapper;
+        this.articleRepository = articleRepository;
     }
 
     public bool ContainsId(long id)
@@ -16,30 +24,39 @@ public class CommentDbRepository : ICommentRepository
         return dbContext.Comments.Any(c => c.Id == id);
     }
 
-    public void CreateComment(Comment comment)
+    public void Create(Comment comment)
     {
-        dbContext.Comments.Add(comment);
+        var commentEntity = mapper.Map<CommentEntity>(comment);
+        dbContext.Comments.Add(commentEntity);
+        dbContext.SaveChanges();
+        comment.Id = commentEntity.Id;
+    }
+
+    public void Delete(long id)
+    {
+        dbContext.Comments.Remove(new CommentEntity { Id = id});
         dbContext.SaveChanges();
     }
 
-    public void DeleteComment(long id)
+    public Comment? ReadById(long id)
     {
-        dbContext.Comments.Remove(new Comment { Id = id });
-        dbContext.SaveChanges();
+        return mapper.Map<Comment>(dbContext.Comments.FirstOrDefault(c => c.Id == id));
     }
 
-    public IEnumerable<Comment> ReadArticleComments(long articleId, int page, int size)
+    public IEnumerable<Comment>? ReadMultiple(long articleId, int page, int size)
     {
-        return dbContext.Comments
-            .Where(c => c.ArticleId == articleId)
-            .Skip((page - 1) * size)
-            .Take(size)
-            .ToList();
-    }
+        if (!articleRepository.ContainsId(articleId))
+        {
+            return null;
+        }
 
-    public Comment? ReadSingleComment(long id)
-    {
-        return dbContext.Comments.FirstOrDefault(c => c.Id == id);
+        return mapper.Map<IEnumerable<Comment>?>(
+                dbContext.Comments
+                .Where(c => c.ArticleId == articleId)
+                .OrderBy(c => c.Id)
+                .Skip((page-1)*size)
+                .Take(size)
+                .ToList()
+            );
     }
-
 }

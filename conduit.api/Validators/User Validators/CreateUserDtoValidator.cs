@@ -1,13 +1,10 @@
-﻿using conduit.db.repositories;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace conduit.api.Validators;
 
 public class CreateUserDtoValidator : ModificationUserDtoValidator
 {
-    public CreateUserDtoValidator(IUserRepository userRepository) : base()
+    public CreateUserDtoValidator() : base()
     {
-        RuleFor(u => u.Username)
-            .Must(n => !userRepository.ContainsUsername(n));
     }
 }

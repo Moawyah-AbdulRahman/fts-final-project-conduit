@@ -6,7 +6,7 @@ public class ArticleDto : GeneralArticleDto
 
     public long CreatorId { get; set; }
 
-    public IEnumerable<long> CommentsIds { get; set; } = Enumerable.Empty<long>();
+    public string CommentsUrl { get; set; } = "";
 
-    public IEnumerable<long> FavouritingUsersIds { get; set; } = Enumerable.Empty<long>();
+    public IEnumerable<string> FavouritingUsersUrls { get; set; } = Enumerable.Empty<string>();
 }

@@ -1,4 +1,7 @@
-﻿using conduit.db.models;
+﻿using AutoMapper;
+using conduit.db.models;
+using conduit.domain.models;
+using conduit.domain.repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace conduit.db.repositories;
@@ -6,10 +9,12 @@ namespace conduit.db.repositories;
 public class UserDbRepository : IUserRepository
 {
     private readonly ConduitDbContext dbContext;
+    private readonly IMapper mapper;
 
-    public UserDbRepository(ConduitDbContext dbContext)
+    public UserDbRepository(ConduitDbContext dbContext, IMapper mapper)
     {
         this.dbContext = dbContext;
+        this.mapper = mapper;
     }
 
     public bool ContainsId(long id)
@@ -19,39 +24,39 @@ public class UserDbRepository : IUserRepository
 
     public bool ContainsUsername(string username)
     {
-        return dbContext.Users.Any(u => u.Username == username);
+        return dbContext.Users.Any(u=>u.Username==username);
     }
 
-    public void CreateUser(User user)
+    public void Create(User user)
     {
-        dbContext.Users.Add(user);
+        var userEntity = mapper.Map<UserEntity>(user);
+        dbContext.Users.Add(userEntity);
         dbContext.SaveChanges();
+        user.Id = userEntity.Id;
     }
 
-    public User? GetUser(long id)
+    public User? ReadById(long id)
     {
-        return dbContext.Users.FirstOrDefault(u => u.Id == id);
+        return mapper.Map<User?>(
+                dbContext.Users.Include(u => u.PostedArticles)
+                .FirstOrDefault(u=>u.Id == id)
+            );
     }
 
-    public IEnumerable<User> ReadUsersWithArticles(int page, int size)
+    public IEnumerable<User> ReadMultiple(int page, int size)
     {
-        return dbContext.Users
-            .Include(u => u.PostedArticles)
-            .Skip((page - 1) * size)
-            .Take(size)
-            .ToList();
+        return mapper.Map<IEnumerable<User>>(
+                dbContext.Users.Include(u=>u.PostedArticles)
+                .OrderBy(u => u.Id)
+                .Skip((page - 1) * size)
+                .Take(size)
+                .ToList()
+            );
     }
 
-    public User? ReadUserWithPostedArticles(long id)
+    public void Update(User user)
     {
-        return dbContext.Users
-            .Include(u => u.PostedArticles)
-            .FirstOrDefault(u => u.Id == id);
-    }
-
-    public void UpdateUser(User user)
-    {
-        dbContext.Users.Update(user);
+        dbContext.Users.Update(mapper.Map<UserEntity>(user));
         dbContext.SaveChanges();
     }
 }

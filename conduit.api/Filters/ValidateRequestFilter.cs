@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using conduit.domain.exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace conduit.api.Filters;
 
-public class ValidationFilter : IAsyncActionFilter
+public class ValidateRequestFilter : IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
@@ -17,6 +18,7 @@ public class ValidationFilter : IAsyncActionFilter
                 });
             return;
         }
+
         await next();
     }
 }

@@ -5,7 +5,9 @@ VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "conduit.api", "conduit.api\conduit.api.csproj", "{34BD6D47-3AFB-44EA-AF4C-D9C8BC77CDE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "conduit.db", "conduit.db\conduit.db.csproj", "{C24776ED-3E78-48F2-9097-7BC7DB8D6281}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "conduit.infrastructure", "conduit.db\conduit.infrastructure.csproj", "{C24776ED-3E78-48F2-9097-7BC7DB8D6281}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "conduit.domain", "conduit.domain\conduit.domain.csproj", "{7AFF8179-88B7-46FA-A596-831B30CFD24F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{C24776ED-3E78-48F2-9097-7BC7DB8D6281}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C24776ED-3E78-48F2-9097-7BC7DB8D6281}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C24776ED-3E78-48F2-9097-7BC7DB8D6281}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AFF8179-88B7-46FA-A596-831B30CFD24F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AFF8179-88B7-46FA-A596-831B30CFD24F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AFF8179-88B7-46FA-A596-831B30CFD24F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AFF8179-88B7-46FA-A596-831B30CFD24F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

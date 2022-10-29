@@ -1,55 +1,59 @@
-﻿using conduit.db.models;
-using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using conduit.db.models;
+using conduit.domain.models;
+using conduit.domain.repositories;
 
 namespace conduit.db.repositories;
 
 public class ArticleDbRepository : IArticleRepository
 {
     private readonly ConduitDbContext dbContext;
+    private readonly IMapper mapper;
 
-    public ArticleDbRepository(ConduitDbContext dbContext)
+    public ArticleDbRepository(ConduitDbContext dbContext, IMapper mapper)
     {
         this.dbContext = dbContext;
+        this.mapper = mapper;
     }
 
-    public bool ContainsId(long id)
+    public bool ContainsId(long value)
     {
-        return dbContext.Articles.Any(a => a.Id == id);
+        return dbContext.Articles.Any(a => a.Id == value);
     }
 
-    public void CreateArticle(Article article)
+    public void Create(Article article)
     {
-        dbContext.Add(article);
+        var articleEntity = mapper.Map<ArticleEntity>(article);
+        dbContext.Articles.Add(articleEntity);
+        dbContext.SaveChanges();
+        article.Id = articleEntity.Id;
+    }
+
+    public void Delete(long articleId)
+    {
+        dbContext.Articles.Remove(new ArticleEntity { Id = articleId });
         dbContext.SaveChanges();
     }
 
-    public void DeleteArticle(long id)
+    public Article? ReadById(long id)
     {
-        dbContext.Articles.Remove(new Article { Id = id });
-        dbContext.SaveChanges();
+        return mapper.Map<Article?>(dbContext.Articles.FirstOrDefault(a => a.Id == id));
     }
 
-    public IEnumerable<Article> ReadArticlesIncludeCommentsAndFavourates(int page, int size)
+    public IEnumerable<Article> ReadMultiple(int page, int size)
     {
-        return dbContext.Articles
-            .Include(a => a.Comments)
-            .Include(a => a.FavouritingUsers)
-            .Skip((page - 1) * size)
-            .Take(size)
-            .ToList();
+        return mapper.Map<IEnumerable<Article>>(
+                dbContext.Articles
+                .OrderBy(a=>a.Id)
+                .Skip((page-1)*size)
+                .Take(size)
+                .ToList()
+            );
     }
 
-    public Article? ReadSingleArticleIncludeCommentsAndFavourates(long id)
+    public void Update(Article article)
     {
-        return dbContext.Articles
-            .Include(a => a.Comments)
-            .Include(a => a.FavouritingUsers)
-            .FirstOrDefault(a => a.Id == id);
-    }
-
-    public void UpdateArticle(Article article)
-    {
-        dbContext.Update(article);
+        dbContext.Articles.Update(mapper.Map<ArticleEntity>(article));
         dbContext.SaveChanges();
     }
 }

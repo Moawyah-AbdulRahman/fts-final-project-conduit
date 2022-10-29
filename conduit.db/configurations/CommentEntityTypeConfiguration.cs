@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace conduit.db.configurations;
 
-internal class CommentEntityTypeConfiguration : IEntityTypeConfiguration<Comment>
+internal class CommentEntityTypeConfiguration : IEntityTypeConfiguration<CommentEntity>
 {
-    public void Configure(EntityTypeBuilder<Comment> builder)
+    public void Configure(EntityTypeBuilder<CommentEntity> builder)
     {
         builder.HasKey(c => c.Id);
 

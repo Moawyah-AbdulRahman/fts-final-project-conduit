@@ -1,6 +1,6 @@
 ﻿namespace conduit.db.models;
 
-public class Article
+public class ArticleEntity
 {
     public long Id { get; set; }
 
@@ -11,9 +11,9 @@ public class Article
     public long CreatorId { get; set; }
 
 
-    public User? Creator { get; set; }
+    public UserEntity? Creator { get; set; }
 
-    public ICollection<Comment>? Comments { get; set; }
+    public ICollection<CommentEntity>? Comments { get; set; }
 
-    public ICollection<User>? FavouritingUsers { get; set; }
+    public ICollection<UserEntity>? FavouritingUsers { get; set; }
 }
