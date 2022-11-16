@@ -2,5 +2,5 @@
 
 public abstract class GeneralUserDto
 {
-    public string Username { get; set; } = "";
+    public string Username { get; set; } = string.Empty;
 }

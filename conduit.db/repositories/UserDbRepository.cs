@@ -24,7 +24,7 @@ public class UserDbRepository : IUserRepository
 
     public bool ContainsUsername(string username)
     {
-        return dbContext.Users.Any(u=>u.Username==username);
+        return dbContext.Users.Any(u => u.Username == username);
     }
 
     public void Create(User user)
@@ -40,6 +40,14 @@ public class UserDbRepository : IUserRepository
         return mapper.Map<User?>(
                 dbContext.Users.Include(u => u.PostedArticles)
                 .FirstOrDefault(u=>u.Id == id)
+            );
+    }
+
+    public User? ReadBasicInfoByUsername(string username)
+    {
+        return mapper.Map<User?>(
+            dbContext.Users
+                .FirstOrDefault(u => u.Username == username)
             );
     }
 

@@ -3,6 +3,7 @@ using conduit.api.Dtos.Comment;
 using conduit.api.Filters;
 using conduit.domain.models;
 using conduit.domain.services.interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace conduit.api.Controllers;
@@ -10,6 +11,7 @@ namespace conduit.api.Controllers;
 [ConduitExceptionFilter]
 [Route("api/articles/{articleId}/comments")]
 [ApiController]
+[Authorize]
 public class CommentsController : ControllerBase
 {
 	private readonly ICommentService service;
