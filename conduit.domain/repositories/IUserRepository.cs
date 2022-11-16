@@ -8,6 +8,7 @@ public interface IUserRepository
     bool ContainsUsername(string username);
     void Create(User user);
     User? ReadById(long id);
+    User? ReadBasicInfoByUsername(string username);
     IEnumerable<User> ReadMultiple(int page, int size);
     void Update(User user);
 }

@@ -6,6 +6,7 @@ namespace conduit.db;
 
 public class ConduitDbContext : DbContext
 {
+    private readonly string connectionString;
 
 #nullable disable
     internal DbSet<UserEntity> Users { get; set; }
@@ -16,18 +17,14 @@ public class ConduitDbContext : DbContext
 
 #nullable enable
 
+    public ConduitDbContext(string connectionString)
+    {
+        this.connectionString = connectionString;
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlServer(@"
-            Data Source=(localdb)\ProjectModels;
-            Initial Catalog=ConduitDb;
-            Integrated Security=True;
-            Connect Timeout=30;
-            Encrypt=False;
-            TrustServerCertificate=False;
-            ApplicationIntent=ReadWrite;
-            MultiSubnetFailover=False"
-         );
+        optionsBuilder.UseSqlServer(connectionString);
 
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }

@@ -13,7 +13,7 @@ public class UserEntityProfile : Profile
 		CreateMap<UserEntity, User>()
 			.ForMember(
 				dest => dest.ArticlesIds,
-				opt=>opt.MapFrom(src=>src.PostedArticles!.Select(a=>a.Id))
+				opt => opt.MapFrom(src => src.PostedArticles!.Select(a => a.Id))
 			);
 	}
 }

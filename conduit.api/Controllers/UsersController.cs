@@ -3,12 +3,14 @@ using conduit.api.Dtos.User;
 using conduit.api.Filters;
 using conduit.domain.models;
 using conduit.domain.services.interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace conduit.api.Controllers;
 [ConduitExceptionFilter]
 [Route("api/users")]
 [ApiController]
+[Authorize]
 public class UsersController : ControllerBase
 {
     private readonly IUserService service;

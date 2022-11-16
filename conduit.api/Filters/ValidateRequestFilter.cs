@@ -1,5 +1,4 @@
-﻿using conduit.domain.exceptions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace conduit.api.Filters;
